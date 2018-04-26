@@ -23,6 +23,7 @@ ORDERED_OBJS += \
 "./tm4c1294ncpdt_startup_ccs.obj" \
 "./src/bme280.obj" \
 "./src/i2c0_rw.obj" \
+"./src/uartstdio.obj" \
 "../tm4c1294ncpdt.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
@@ -169,8 +170,8 @@ tiva_tm4c.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "croutine.obj" "event_groups.obj" "heap_4.obj" "list.obj" "main.obj" "port.obj" "portasm.obj" "queue.obj" "tasks.obj" "timers.obj" "tm4c1294ncpdt_startup_ccs.obj" "src\bme280.obj" "src\i2c0_rw.obj" 
-	-$(RM) "croutine.d" "event_groups.d" "heap_4.d" "list.d" "main.d" "port.d" "queue.d" "tasks.d" "timers.d" "tm4c1294ncpdt_startup_ccs.d" "src\bme280.d" "src\i2c0_rw.d" 
+	-$(RM) "croutine.obj" "event_groups.obj" "heap_4.obj" "list.obj" "main.obj" "port.obj" "portasm.obj" "queue.obj" "tasks.obj" "timers.obj" "tm4c1294ncpdt_startup_ccs.obj" "src\bme280.obj" "src\i2c0_rw.obj" "src\uartstdio.obj" 
+	-$(RM) "croutine.d" "event_groups.d" "heap_4.d" "list.d" "main.d" "port.d" "queue.d" "tasks.d" "timers.d" "tm4c1294ncpdt_startup_ccs.d" "src\bme280.d" "src\i2c0_rw.d" "src\uartstdio.d" 
 	-$(RM) "portasm.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

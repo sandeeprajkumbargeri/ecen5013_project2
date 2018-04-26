@@ -21,10 +21,13 @@
 #include "driverlib/gpio.h"
 //#include "driverlib/i2c.h"
 //#include "driverlib/interrupt.h"
-//#include "driverlib/pin_map.h"
+#include "driverlib/pin_map.h"
 //#include "driverlib/rom.h"
-//#include "driverlib/rom_map.h"
+#include "driverlib/rom_map.h"
 #include "driverlib/sysctl.h"
+#include "driverlib/uart.h"
+#include "inc/uartstdio.h"
+
 
 //#include "inc/hw_sysctl.h"
 //#include "inc/hw_types.h"
@@ -32,6 +35,8 @@
 
 #define CLOCK_FREQUENCY     120000000 - 1
 
+#define UART_PORT_0         0
+#define UART_BAUD_RATE      115200
 
 #define TIMER_FREQUENCY     4
 #define TIMER_PERIOD        1000/(1.5 * 2 * TIMER_FREQUENCY)
