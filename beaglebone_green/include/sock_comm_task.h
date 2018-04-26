@@ -12,6 +12,8 @@
 #include <sys/stat.h>
 #include <mqueue.h>
 
+#define SOCK_COMM_LISTEN_PORT                 8888
+
 #define COMMAND_TEMP_READ_TLOW                0x01
 #define COMMAND_TEMP_READ_THIGH               0x02
 #define COMMAND_TEMP_READ_DATA_REG            0x03
@@ -43,6 +45,10 @@
 #define COMMAND_LIGHT_READ_INT_TRSHLD_HIGH    0x1B
 #define COMMAND_LIGHT_SET_INT_TRSHLD_LOW      0x1C
 #define COMMAND_LIGHT_SET_INT_TRSHLD_HIGH     0x1D
+
+struct sockaddr_un sockaddr_ui, sockaddr_comm;
+struct sockaddr_in sockaddr_comm_ip, sockaddr_comm_client;
+socklen_t sockaddr_length_ui, sockaddr_length_ip;
 
 void *sock_comm_task_thread(void *);
 void *sock_comm_heartbeat_notifier(void *);
