@@ -1,7 +1,6 @@
-#include <stdbool.h>
-
 #include "inc/bme280.h"
 #include "inc/i2c0_rw.h"
+#include <stdbool.h>
 
 #include "inc/hw_memmap.h"
 #include "driverlib/gpio.h"

@@ -22,6 +22,8 @@ ORDERED_OBJS += \
 "./timers.obj" \
 "./tm4c1294ncpdt_startup_ccs.obj" \
 "./src/bme280.obj" \
+"./src/comms.obj" \
+"./src/hcsr04.obj" \
 "./src/i2c0_rw.obj" \
 "./src/uartstdio.obj" \
 "../tm4c1294ncpdt.cmd" \
@@ -156,7 +158,7 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 tiva_tm4c.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: ARM Linker'
-	"C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs="ccs" --define=PART_TM4C1294NCPDT --define=TARGET_IS_TM4C129_RA1 -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"tiva_tm4c.map" --heap_size=0 --stack_size=512 -i"C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/lib" -i"C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="tiva_tm4c_linkInfo.xml" --rom_model -o "tiva_tm4c.out" $(ORDERED_OBJS)
+	"C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --opt_for_speed=1 --define=ccs="ccs" --define=PART_TM4C1294NCPDT --define=TARGET_IS_TM4C129_RA1 -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"tiva_tm4c.map" --heap_size=0 --stack_size=512 -i"C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/lib" -i"C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="tiva_tm4c_linkInfo.xml" --rom_model -o "tiva_tm4c.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
@@ -170,8 +172,8 @@ tiva_tm4c.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "croutine.obj" "event_groups.obj" "heap_4.obj" "list.obj" "main.obj" "port.obj" "portasm.obj" "queue.obj" "tasks.obj" "timers.obj" "tm4c1294ncpdt_startup_ccs.obj" "src\bme280.obj" "src\i2c0_rw.obj" "src\uartstdio.obj" 
-	-$(RM) "croutine.d" "event_groups.d" "heap_4.d" "list.d" "main.d" "port.d" "queue.d" "tasks.d" "timers.d" "tm4c1294ncpdt_startup_ccs.d" "src\bme280.d" "src\i2c0_rw.d" "src\uartstdio.d" 
+	-$(RM) "croutine.obj" "event_groups.obj" "heap_4.obj" "list.obj" "main.obj" "port.obj" "portasm.obj" "queue.obj" "tasks.obj" "timers.obj" "tm4c1294ncpdt_startup_ccs.obj" "src\bme280.obj" "src\comms.obj" "src\hcsr04.obj" "src\i2c0_rw.obj" "src\uartstdio.obj" 
+	-$(RM) "croutine.d" "event_groups.d" "heap_4.d" "list.d" "main.d" "port.d" "queue.d" "tasks.d" "timers.d" "tm4c1294ncpdt_startup_ccs.d" "src\bme280.d" "src\comms.d" "src\hcsr04.d" "src\i2c0_rw.d" "src\uartstdio.d" 
 	-$(RM) "portasm.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

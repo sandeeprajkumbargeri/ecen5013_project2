@@ -92,3 +92,4 @@ double BME280_compensate_T_double(BME280_S32_t adc_T);
 double BME280_compensate_P_double(BME280_S32_t adc_P);
 double bme280_compensate_H_double(BME280_S32_t adc_H);
 BME280_data_t BME280_GetCompensatedData();
+void Task_BME280(void *pvParameters);

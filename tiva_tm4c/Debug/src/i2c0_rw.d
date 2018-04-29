@@ -1,8 +1,8 @@
 # FIXED
 
 src/i2c0_rw.obj: ../src/i2c0_rw.c
-src/i2c0_rw.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdbool.h
 src/i2c0_rw.obj: D:/delilah/tiva_tm4c/inc/bme280.h
+src/i2c0_rw.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdbool.h
 src/i2c0_rw.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdint.h
 src/i2c0_rw.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/sys/stdint.h
 src/i2c0_rw.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/sys/cdefs.h
@@ -22,8 +22,8 @@ src/i2c0_rw.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/pin_map.h
 src/i2c0_rw.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/sysctl.h
 
 ../src/i2c0_rw.c: 
-C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdbool.h: 
 D:/delilah/tiva_tm4c/inc/bme280.h: 
+C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdbool.h: 
 C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdint.h: 
 C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/sys/stdint.h: 
 C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/sys/cdefs.h: 

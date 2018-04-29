@@ -1,7 +1,18 @@
-#include <stdbool.h>
+#include <stdlib.h>
 
 #include "inc/i2c0_rw.h"
 #include "inc/bme280.h"
+
+#include "driverlib/gpio.h"
+#include "inc/hw_memmap.h"
+#include "driverlib/pin_map.h"
+#include "driverlib/rom_map.h"
+#include "driverlib/sysctl.h"
+#include "inc/uartstdio.h"
+
+#include <FreeRTOS.h>
+#include "task.h"
+#include "semphr.h"
 
 unsigned    short   dig_T1;
 signed      short   dig_T2;
@@ -25,6 +36,8 @@ signed      short   dig_H5;
 signed      char    dig_H6;
 
 long signed int t_fine = 0x00;
+
+extern SemaphoreHandle_t sem_bme280_acq;
 
 bool BME280_Init(void)
 {
@@ -139,17 +152,17 @@ double bme280_compensate_H_double(BME280_S32_t adc_H)
 
 BME280_data_t BME280_GetCompensatedData()
 {
-    uint8_t bme280_status = 0;
+    //uint8_t bme280_status = 0;
     uint8_t read_bytes[8] = {0};
     signed long int t_raw = 0;
     signed long int p_raw = 0;
     signed long int h_raw = 0;
     BME280_data_t compensated_data;
 
-    do
-    {
-        I2C0_Read(BME280_SLAVE_ADDR, BME280_STATUS_ADDR, &bme280_status, 1);
-    }while(bme280_status != BME280_STATUS_VAL_NOT_BUSY);
+//    do
+//    {
+//        I2C0_Read(BME280_SLAVE_ADDR, BME280_STATUS_ADDR, &bme280_status, 1);
+//    }while(bme280_status != BME280_STATUS_VAL_NOT_BUSY);
 
     I2C0_Read(BME280_SLAVE_ADDR, BME280_PRESS_MSB_ADDR, read_bytes, 8);
 
@@ -164,3 +177,31 @@ BME280_data_t BME280_GetCompensatedData()
     return compensated_data;
 }
 
+void Task_BME280(void *pvParameters)
+{
+    BME280_config_t bme280_config;
+    BME280_data_t bme280_compensated_data;
+    char print_string[64];
+
+    I2C0_Init();
+
+    if(BME280_Init() == false)
+        vTaskDelete(NULL);
+
+    bme280_config.ctrl_hum = BME280_CTRL_HUM_VAL_OVSP_X16;
+    bme280_config.ctrl_meas = BME280_CTRL_MEAS_VAL_TEMP_OVSP_X16 | BME280_CTRL_MEAS_VAL_PRESS_OVSP_X16 | BME280_CTRL_MEAS_VAL_MODE_NORMAL;
+    bme280_config.config = BME280_CONFIG_VAL_T_STANDBY_1000MS | BME280_CONFIG_VAL_FILTER_16;
+
+    BME280_Configure(bme280_config);
+
+    GPIOPinWrite(GPIO_PORTN_BASE, GPIO_PIN_1, GPIO_PIN_1); //just for setting breakpoint and checking the value of received.
+
+    while(1)
+    {
+        xSemaphoreTake(sem_bme280_acq, portMAX_DELAY);
+        bme280_compensated_data = BME280_GetCompensatedData();
+
+        sprintf(print_string, "T: %lf C. P: %lf hPa. H: %lf rH.\n", bme280_compensated_data.temperature, bme280_compensated_data.pressure / 100, bme280_compensated_data.humidity);
+        UARTprintf(print_string);
+    }
+}

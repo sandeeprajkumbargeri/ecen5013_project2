@@ -16,6 +16,7 @@ main.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/machine/_stdi
 main.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/sys/_stdint.h
 main.obj: ../inc/bme280.h
 main.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdbool.h
+main.obj: ../inc/hcsr04.h
 main.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdlib.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/FreeRTOS.h
 main.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stddef.h
@@ -30,6 +31,7 @@ main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/semphr.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/queue.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/timers.h
+main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/event_groups.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/inc/hw_memmap.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/gpio.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/pin_map.h
@@ -54,6 +56,7 @@ C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/machine/_stdint.h:
 C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/sys/_stdint.h: 
 ../inc/bme280.h: 
 C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdbool.h: 
+../inc/hcsr04.h: 
 C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdlib.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/FreeRTOS.h: 
 C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stddef.h: 
@@ -68,6 +71,7 @@ C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/list.h:
 C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/semphr.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/queue.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/timers.h: 
+C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/event_groups.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/inc/hw_memmap.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/gpio.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/pin_map.h: 
