@@ -72,9 +72,10 @@ typedef struct mq_payload_heartbeat
 
 typedef struct sk_payload_ip_request
 {
-	unsigned char command;
-	uint16_t data;
-} sk_payload_ip_request_t;
+	uint8_t device_id;
+	uint8_t route_id;
+	uint8_t message[98];
+} sk_payload_ip_message_t;
 
 typedef struct sk_payload_ui_request
 {

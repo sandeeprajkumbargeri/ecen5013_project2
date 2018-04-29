@@ -27,7 +27,7 @@ void *ui_task_thread(void *args)
   bzero(&sockaddr_comm, sockaddr_length);
 
   sockaddr_ui.sun_family = AF_UNIX;
-  strncpy(sockaddr_ui.sun_path, sockaddr_path_comm, sizeof(sockaddr_ui.sun_path) -1);
+  strncpy(sockaddr_ui.sun_path, sockaddr_path_ui, sizeof(sockaddr_ui.sun_path) -1);
 
   sockaddr_comm.sun_family = AF_UNIX;
   strncpy(sockaddr_comm.sun_path, sockaddr_path_comm, sizeof(sockaddr_comm.sun_path) -1);
@@ -39,7 +39,9 @@ void *ui_task_thread(void *args)
   for(int i = 0; i < TOTAL_COMMANDS; i++)
     printf("%s\n",command_list[i]);
 
-  while(1)
+  pthread_create(&heartbeat_ui_notifier_task, NULL, heartbeat_ui_notifier_thread, (void *) NULL);
+
+  while(!close_app)
   {
     bzero(command, sizeof(command));
     printf("\n$ ");
@@ -70,6 +72,22 @@ void *ui_task_thread(void *args)
 
     else
     {
+      if(command >= COMMAND_SET_TEMPERATURE_MAX && command <= COMMAND_SET_RANGE)
+        printf("Enter value: ");
+
+      scanf("&u", request.data);
+
+      if((request.command == COMMAND_SET_TEMPERATURE_MAX) && (request.data > MAX_SETTABLE_TEMP) ||
+      (request.command == COMMAND_SET_TEMPERATURE_MIN) && (request.data < MIN_SETTABLE_TEMP) ||
+      (request.command == COMMAND_SET_PRESSURE_MAX) && (request.data > MAX_SETTABLE_PRESS) ||
+      (request.command == COMMAND_SET_PRESSURE_MIN) && (request.data < MIN_SETTABLE_PRESS) ||
+      (request.command == COMMAND_SET_HUMIDITY_MAX) && (request.data > MAX_SETTABLE_HUMID) ||
+      (request.command == COMMAND_SET_HUMIDITY_MIN) && (request.data < MIN_SETTABLE_HUMID))
+      {
+        printf("## ERROR ## Value out of bounds.\n");
+        continue;
+      }
+
       if(sendto(sock_ui, (const void *) &request, sizeof(request), 0, (const struct sockaddr *) &sockaddr_comm, sockaddr_length) < 0)
         errExit("## ERROR ## Sending request to remote: ");
 
@@ -82,6 +100,34 @@ void *ui_task_thread(void *args)
     }
   }
 
+  pthread_exit(0);
+}
+
+void *heartbeat_ui_notifier_thread(void *args)
+{
+  mq_payload_heartbeat_t heartbeat_ui;
+  char log_message[128];
+
+  bzero(&heartbeat_ui, sizeof(heartbeat_ui));
+  heartbeat_ui.sender_id = UI_TASK_ID;
+  heartbeat_ui.heartbeat_status = true;
+
+  while(!close_app)
+  {
+    sem_wait(&sem_ui);
+
+    if(send_heartbeat[UI_TASK_ID])
+    {
+        if(mq_send(mq_heartbeat, (char *) &heartbeat_ui, sizeof(heartbeat_ui), 1) < 0)
+        {
+          bzero(log_message, sizeof(log_message));
+          sprintf(log_message, "## SOCK COMM ## Unable to send heartbeat. %s", strerror(errno));
+          LOG(mq_logger, log_message);
+        }
+
+        send_heartbeat[UI_TASK_ID] = false;
+    }
+  }
   pthread_exit(0);
 }
 
@@ -102,38 +148,38 @@ void command_list_init(void)
 {
   bzero(command_list, sizeof(command_list));
   strcpy(command_list[COMMAND_HELP], "help");
-  strcpy(command_list[COMMAND_TEMP_READ_TLOW], "temp read t-low");
-  strcpy(command_list[COMMAND_TEMP_READ_THIGH], "temp read t-high");
-  strcpy(command_list[COMMAND_TEMP_READ_DATA_REG], "temp read data");
-  strcpy(command_list[COMMAND_TEMP_SET_SD_ON], "temp set shutdown on");
-  strcpy(command_list[COMMAND_TEMP_SET_SD_OFF], "temp set shutdown off");
-  strcpy(command_list[COMMAND_TEMP_READ_RESOLUTION], "temp read resolution");
-  strcpy(command_list[COMMAND_TEMP_READ_FAULT_BITS], "temp read fault-bits");
-  strcpy(command_list[COMMAND_TEMP_READ_EM], "temp read ext-mode");
-  strcpy(command_list[COMMAND_TEMP_SET_EM_ON], "temp set ext-mode on");
-  strcpy(command_list[COMMAND_TEMP_SET_EM_OFF], "temp set ext-mode off");
 
-  strcpy(command_list[COMMAND_TEMP_SET_CONV_RATE_0], "temp set conv-rate 0.25hz");
-  strcpy(command_list[COMMAND_TEMP_SET_CONV_RATE_1], "temp set conv-rate 1hz");
-  strcpy(command_list[COMMAND_TEMP_SET_CONV_RATE_2], "temp set conv-rate 4hz");
-  strcpy(command_list[COMMAND_TEMP_SET_CONV_RATE_3], "temp set conv-rate 8hz");
-  strcpy(command_list[COMMAND_TEMP_READ_CONV_RATE], "temp read conv-rate");
+  strcpy(command_list[COMMAND_GET_TEMPERATURE_VAL], "get temp val");
+  strcpy(command_list[COMMAND_GET_TEMPERATURE_MAX], "get temp alert max");
+  strcpy(command_list[COMMAND_GET_TEMPERATURE_MIN], "get temp alert min");
+  strcpy(command_list[COMMAND_GET_PRESSURE_VAL], "get press val");
+  strcpy(command_list[COMMAND_GET_PRESSURE_MAX], "get press alert max");
+  strcpy(command_list[COMMAND_GET_PRESSURE_MIN], "get press alert min");
+  strcpy(command_list[COMMAND_GET_HUMIDITY_VAL], "get humid val");
+  strcpy(command_list[COMMAND_GET_HUMIDITY_MAX], "get humid alert max");
+  strcpy(command_list[COMMAND_GET_HUMIDITY_MIN], "get humid alert min");
+  strcpy(command_list[COMMAND_GET_COUNT_VAL], "get count val");
+  strcpy(command_list[COMMAND_GET_COUNT_MAX], "get count alert max");
+  strcpy(command_list[COMMAND_GET_COUNT_MIN], "get count alert min");
+  strcpy(command_list[COMMAND_GET_RANGE_VAL], "get range");
 
+  strcpy(command_list[COMMAND_SET_TEMPERATURE_MAX], "set temp alert max");
+  strcpy(command_list[COMMAND_SET_TEMPERATURE_MIN], "set temp alert min");
+  strcpy(command_list[COMMAND_SET_PRESSURE_MAX], "set press alert max");
+  strcpy(command_list[COMMAND_SET_PRESSURE_MIN], "set press alert min");
+  strcpy(command_list[COMMAND_SET_HUMIDITY_MAX], "set humid alert max");
+  strcpy(command_list[COMMAND_SET_HUMIDITY_MIN], "set humid alert min");
+  strcpy(command_list[COMMAND_SET_COUNT_MAX], "set count alert max");
+  strcpy(command_list[COMMAND_SET_COUNT_MIN], "set count alert min");
+  strcpy(command_list[COMMAND_SET_RANGE], "set range");
 
-  strcpy(command_list[COMMAND_LIGHT_SET_INTG_TIME_0], "light set intg-time 13.7ms");
-  strcpy(command_list[COMMAND_LIGHT_SET_INTG_TIME_1], "light set intg-time 101ms");
-  strcpy(command_list[COMMAND_LIGHT_SET_INTG_TIME_2], "light set intg-time 402ms");
-  strcpy(command_list[COMMAND_LIGHT_READ_INTG_TIME], "light read intg-time");
-  strcpy(command_list[COMMAND_LIGHT_READ_GAIN], "light read gain");
-  strcpy(command_list[COMMAND_LIGHT_SET_GAIN_HIGH], "light set gain high");
-  strcpy(command_list[COMMAND_LIGHT_SET_GAIN_LOW], "light set gain low");
-  strcpy(command_list[COMMAND_LIGHT_SET_INT_ENABLE], "light set int enable");
-  strcpy(command_list[COMMAND_LIGHT_SET_INT_DISABLE], "light set int disable");
-  strcpy(command_list[COMMAND_LIGHT_READ_IDENTIFY_REG], "light read id");
-  strcpy(command_list[COMMAND_LIGHT_READ_INT_TRSHLD_LOW], "light read trshld low");
-  strcpy(command_list[COMMAND_LIGHT_READ_INT_TRSHLD_HIGH], "light read trshld low");
-  strcpy(command_list[COMMAND_LIGHT_SET_INT_TRSHLD_LOW], "light set trshld low");
-  strcpy(command_list[COMMAND_LIGHT_SET_INT_TRSHLD_HIGH], "light set trshld high");
+  strcpy(command_list[COMMAND_START_SENSOR], "start sensor");
+  strcpy(command_list[COMMAND_START_COUNTER], "start count");
+  strcpy(command_list[COMMAND_STOP_SENSOR], "stop sensor");
+  strcpy(command_list[COMMAND_STOP_COUNTER], "stop count");
+  strcpy(command_list[COMMAND_RESET_COUNTER], "reset count");
+
+  strcpy(command_list[COMMAND_REQUEST_ID], "which client");
 
   strcpy(command_list[COMMAND_EXIT], "exit");
 }

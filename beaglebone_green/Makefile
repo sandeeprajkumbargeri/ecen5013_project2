@@ -14,7 +14,7 @@ logger_task.o: $(SDIR)logger_task.c $(IDIR)logger_task.h main.h
 	$(CC) -c $(SDIR)logger_task.c
 
 ui_task.o: ui_task.c ui_task.h $(IDIR)sock_comm_task.h
-	$(CC) -c ui_task.c
+	$(CC) -c $(SDIR)ui_task.c
 
 main.o: main.c main.h $(IDIR)logger_task.h
 	$(CC) -c main.c

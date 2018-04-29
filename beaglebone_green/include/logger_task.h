@@ -4,6 +4,8 @@
 #include <time.h>
 #include "../main.h"
 
+extern bool close_app;
+
 #define LOG(mq_logger, log_message)({\
         	if(mq_send(mq_logger, (const char *) log_message, sizeof(log_message), 0) < 0)\
                 	perror("Error Sending Request to Temp Task");\

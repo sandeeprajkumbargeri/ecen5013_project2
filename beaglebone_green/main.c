@@ -138,8 +138,8 @@ int main (int argc, char *argv[])
 	pthread_join(sock_comm_task, NULL);
   pthread_join(ui_task, NULL);
 
-	mq_unlink(MQ_LOGGER_ID);
-	mq_unlink(MQ_HEARTBEAT_ID);
+	mq_unlink(MQ_LOGGER_PATH);
+	mq_unlink(MQ_HEARTBEAT_PATH);
 
   close(sock_comm);
   close(sock_ui);
@@ -211,22 +211,22 @@ void setup_mq(void)
 {
 	struct mq_attr attr;
 
-	mq_unlink(MQ_LOGGER_ID);
-	mq_unlink(MQ_HEARTBEAT_ID);
+	mq_unlink(MQ_LOGGER_PATH);
+	mq_unlink(MQ_HEARTBEAT_PATH);
 
 	bzero(&attr, sizeof(attr));
 	attr.mq_flags = O_RDWR;
 	attr.mq_maxmsg = 10;
 	attr.mq_msgsize = sizeof(mq_payload_heartbeat_t);
 
-	mq_heartbeat = mq_open(MQ_HEARTBEAT_ID, O_CREAT | O_RDWR | S_IRUSR | S_IWUSR | S_IROTH | S_IWOTH, &attr);
+	mq_heartbeat = mq_open(MQ_HEARTBEAT_PATH, O_CREAT | O_RDWR | S_IRUSR | S_IWUSR | S_IROTH | S_IWOTH, &attr);
 
 	if(mq_heartbeat < 0)
 		perror("Heartbeat Message Queue");
 
 	attr.mq_msgsize = 128 * sizeof(char);
 
-	mq_logger = mq_open(MQ_LOGGER_ID, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR, &attr);
+	mq_logger = mq_open(MQ_LOGGER_PATH, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR, &attr);
 
 	if(mq_logger < 0)
 		perror("Logger Queue");
