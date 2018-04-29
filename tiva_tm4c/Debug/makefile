@@ -10,21 +10,22 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
-"./croutine.obj" \
-"./event_groups.obj" \
-"./heap_4.obj" \
-"./list.obj" \
 "./main.obj" \
-"./port.obj" \
-"./portasm.obj" \
-"./queue.obj" \
-"./tasks.obj" \
-"./timers.obj" \
 "./tm4c1294ncpdt_startup_ccs.obj" \
+"./FreeRTOS/croutine.obj" \
+"./FreeRTOS/event_groups.obj" \
+"./FreeRTOS/heap_4.obj" \
+"./FreeRTOS/list.obj" \
+"./FreeRTOS/port.obj" \
+"./FreeRTOS/portasm.obj" \
+"./FreeRTOS/queue.obj" \
+"./FreeRTOS/tasks.obj" \
+"./FreeRTOS/timers.obj" \
 "./src/bme280.obj" \
-"./src/comms.obj" \
+"./src/comm_task.obj" \
 "./src/hcsr04.obj" \
 "./src/i2c0_rw.obj" \
+"./src/uart_comm.obj" \
 "./src/uartstdio.obj" \
 "../tm4c1294ncpdt.cmd" \
 $(GEN_CMDS__FLAG) \
@@ -39,8 +40,10 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include FreeRTOS/subdir_vars.mk
 -include src/subdir_vars.mk
 -include subdir_rules.mk
+-include FreeRTOS/subdir_rules.mk
 -include src/subdir_rules.mk
 -include objects.mk
 
@@ -172,9 +175,9 @@ tiva_tm4c.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "croutine.obj" "event_groups.obj" "heap_4.obj" "list.obj" "main.obj" "port.obj" "portasm.obj" "queue.obj" "tasks.obj" "timers.obj" "tm4c1294ncpdt_startup_ccs.obj" "src\bme280.obj" "src\comms.obj" "src\hcsr04.obj" "src\i2c0_rw.obj" "src\uartstdio.obj" 
-	-$(RM) "croutine.d" "event_groups.d" "heap_4.d" "list.d" "main.d" "port.d" "queue.d" "tasks.d" "timers.d" "tm4c1294ncpdt_startup_ccs.d" "src\bme280.d" "src\comms.d" "src\hcsr04.d" "src\i2c0_rw.d" "src\uartstdio.d" 
-	-$(RM) "portasm.d" 
+	-$(RM) "main.obj" "tm4c1294ncpdt_startup_ccs.obj" "FreeRTOS\croutine.obj" "FreeRTOS\event_groups.obj" "FreeRTOS\heap_4.obj" "FreeRTOS\list.obj" "FreeRTOS\port.obj" "FreeRTOS\portasm.obj" "FreeRTOS\queue.obj" "FreeRTOS\tasks.obj" "FreeRTOS\timers.obj" "src\bme280.obj" "src\comm_task.obj" "src\hcsr04.obj" "src\i2c0_rw.obj" "src\uart_comm.obj" "src\uartstdio.obj" 
+	-$(RM) "main.d" "tm4c1294ncpdt_startup_ccs.d" "FreeRTOS\croutine.d" "FreeRTOS\event_groups.d" "FreeRTOS\heap_4.d" "FreeRTOS\list.d" "FreeRTOS\port.d" "FreeRTOS\queue.d" "FreeRTOS\tasks.d" "FreeRTOS\timers.d" "src\bme280.d" "src\comm_task.d" "src\hcsr04.d" "src\i2c0_rw.d" "src\uart_comm.d" "src\uartstdio.d" 
+	-$(RM) "FreeRTOS\portasm.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

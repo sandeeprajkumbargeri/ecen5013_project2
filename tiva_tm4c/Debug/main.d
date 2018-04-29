@@ -17,7 +17,14 @@ main.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/sys/_stdint.h
 main.obj: ../inc/bme280.h
 main.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdbool.h
 main.obj: ../inc/hcsr04.h
-main.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdlib.h
+main.obj: ../inc/comm_task.h
+main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/inc/hw_memmap.h
+main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/gpio.h
+main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/pin_map.h
+main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/rom_map.h
+main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/timer.h
+main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/sysctl.h
+main.obj: D:/delilah/tiva_tm4c/inc/uartstdio.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/FreeRTOS.h
 main.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stddef.h
 main.obj: D:/delilah/tiva_tm4c/FreeRTOSConfig.h
@@ -26,19 +33,15 @@ main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/deprecated_definitions.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/portmacro.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/mpu_wrappers.h
-main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/task.h
-main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/list.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/semphr.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/queue.h
+main.obj: D:/delilah/tiva_tm4c/inc/uart_comm.h
+main.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdlib.h
+main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/task.h
+main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/list.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/timers.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/event_groups.h
-main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/inc/hw_memmap.h
-main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/gpio.h
-main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/pin_map.h
-main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/rom_map.h
-main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/sysctl.h
 main.obj: C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/uart.h
-main.obj: ../inc/uartstdio.h
 
 ../main.c: 
 ../main.h: 
@@ -57,7 +60,14 @@ C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/sys/_stdint.h:
 ../inc/bme280.h: 
 C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdbool.h: 
 ../inc/hcsr04.h: 
-C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdlib.h: 
+../inc/comm_task.h: 
+C:/ti/TivaWare_C_Series-2.1.3.156/inc/hw_memmap.h: 
+C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/gpio.h: 
+C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/pin_map.h: 
+C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/rom_map.h: 
+C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/timer.h: 
+C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/sysctl.h: 
+D:/delilah/tiva_tm4c/inc/uartstdio.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/FreeRTOS.h: 
 C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stddef.h: 
 D:/delilah/tiva_tm4c/FreeRTOSConfig.h: 
@@ -66,16 +76,12 @@ C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/portable.h
 C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/deprecated_definitions.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/portmacro.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/mpu_wrappers.h: 
-C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/task.h: 
-C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/list.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/semphr.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/queue.h: 
+D:/delilah/tiva_tm4c/inc/uart_comm.h: 
+C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include/stdlib.h: 
+C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/task.h: 
+C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/list.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/timers.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/include/event_groups.h: 
-C:/ti/TivaWare_C_Series-2.1.3.156/inc/hw_memmap.h: 
-C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/gpio.h: 
-C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/pin_map.h: 
-C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/rom_map.h: 
-C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/sysctl.h: 
 C:/ti/TivaWare_C_Series-2.1.3.156/driverlib/uart.h: 
-../inc/uartstdio.h: 

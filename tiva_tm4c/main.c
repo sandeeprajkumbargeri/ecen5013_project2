@@ -64,6 +64,10 @@ int main(void)
     GPIOPinTypeGPIOOutput(GPIO_PORTN_BASE, GPIO_PIN_1);
     GPIOPinTypeGPIOOutput(GPIO_PORTN_BASE, GPIO_PIN_0);
 
+    comm_send_queue = xQueueCreate(100, SEND_PACKET_SIZE);
+    comm_receive_queue = xQueueCreate(100, RECEIVE_PACKET_SIZE);
+
+    comm_task_sem = xSemaphoreCreateCounting(SEMAPHORE_MAX_COUNT, SEMAPHORE_INITIAL_COUNT);
     sem_bme280_acq = xSemaphoreCreateBinary();
     sem_hcsr04_acq = xSemaphoreCreateBinary();
     sem_hcsr04_update = xSemaphoreCreateBinary();
@@ -76,11 +80,8 @@ int main(void)
     // Create task for 2Hz Blinking LED
     xTaskCreate(Task_HCSR04, "Task dedicated to Ultrasonic Sensor acquisitions", 999, NULL, 1, NULL );
 
-//    // Create task for 2Hz Blinking LED
-//    xTaskCreate(Task_EthernetConnection, "Task dedicated to Ethernet connection", 1000, NULL, 1, NULL );
-//
-//    // Create task for 2Hz Blinking LED
-//    xTaskCreate(Task_UARTConnection, "Task dedicated to UART connection", 1000, NULL, 1, NULL );
+    // Create task for 2Hz Blinking LED
+    xTaskCreate(vCommTask, "Task dedicated to UART connection", 1000, NULL, 1, NULL );
 
     //Create timer for 4hz and register the timer_callback handler
     timer = xTimerCreate("1Hz Timer", pdMS_TO_TICKS(TIMER_PERIOD), pdTRUE, (void *)&timer_id, timer_callback);

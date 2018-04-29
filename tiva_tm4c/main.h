@@ -1,6 +1,7 @@
 #include "inc/i2c0_rw.h"
 #include "inc/bme280.h"
 #include "inc/hcsr04.h"
+#include "inc/comm_task.h"
 
 //#include <stdint.h>
 #include <stdbool.h>
@@ -36,6 +37,11 @@
 #define CLOCK_FREQUENCY     120000000 - 1
 //#define CLOCK_FREQUENCY     32000000
 
+#define UART_COMM
+
+#define SEMAPHORE_MAX_COUNT         100
+#define SEMAPHORE_INITIAL_COUNT     0
+
 #define UART_PORT_0         0
 #define UART_BAUD_RATE      115200
 
@@ -48,7 +54,9 @@
 #define EVENT_US1_DONE            ((EventBits_t) 1<<0)        //Event bit for notifying US1 is done getting acquisition
 #define EVENT_PRINT_STRING            ((EventBits_t) 1<<1)        //Event bit for printing the string
 
-SemaphoreHandle_t sem_bme280_acq, sem_hcsr04_acq, sem_hcsr04_update;
+SemaphoreHandle_t comm_task_sem, sem_bme280_acq, sem_hcsr04_acq, sem_hcsr04_update;
 
 EventGroupHandle_t event_group;
 uint32_t g_ui32SysClock;
+
+QueueHandle_t comm_send_queue, comm_receive_queue, bme280_queue, hcsr04_queue;                                    //Queue used to send the Log string from Task 2 to Task 3.

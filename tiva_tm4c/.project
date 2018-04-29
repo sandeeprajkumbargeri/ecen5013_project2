@@ -26,54 +26,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>croutine.c</name>
-			<type>1</type>
-			<location>C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/croutine.c</location>
-		</link>
-		<link>
-			<name>event_groups.c</name>
-			<type>1</type>
-			<location>C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/event_groups.c</location>
-		</link>
-		<link>
-			<name>heap_4.c</name>
-			<type>1</type>
-			<location>C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/portable/MemMang/heap_4.c</location>
-		</link>
-		<link>
-			<name>list.c</name>
-			<type>1</type>
-			<location>C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/list.c</location>
-		</link>
-		<link>
-			<name>port.c</name>
-			<type>1</type>
-			<location>C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/port.c</location>
-		</link>
-		<link>
-			<name>portasm.asm</name>
-			<type>1</type>
-			<location>C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/portable/CCS/ARM_CM4F/portasm.asm</location>
-		</link>
-		<link>
-			<name>queue.c</name>
-			<type>1</type>
-			<location>C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/queue.c</location>
-		</link>
-		<link>
 			<name>readme.txt</name>
 			<type>1</type>
 			<location>C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/readme.txt</location>
-		</link>
-		<link>
-			<name>tasks.c</name>
-			<type>1</type>
-			<location>C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/tasks.c</location>
-		</link>
-		<link>
-			<name>timers.c</name>
-			<type>1</type>
-			<location>C:/ti/TivaWare_C_Series-2.1.3.156/third_party/FreeRTOS/Source/timers.c</location>
 		</link>
 	</linkedResources>
 </projectDescription>
