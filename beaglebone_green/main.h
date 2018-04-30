@@ -22,8 +22,8 @@
 
 #define TOTAL_TASKS							3
 
-#define MQ_LOGGER_PATH            "/tmp/mq_logger"
-#define MQ_HEARTBEAT_PATH         "/tmp/mq_heartbeat"
+#define MQ_LOGGER_PATH            "/mq_logger"
+#define MQ_HEARTBEAT_PATH         "/mq_heartbeat"
 #define SK_SOCK_COMM_PATH    			"/tmp/sk_sock_comm"
 #define SK_UI_PATH    						"/tmp/sk_ui"
 
@@ -79,8 +79,9 @@ typedef struct sk_payload_ip_request
 
 typedef struct sk_payload_ui_request
 {
-	unsigned char command;
-	uint16_t data;
+	uint8_t device_id;
+	uint8_t command;
+	uint32_t data;
 } sk_payload_ui_request_t;
 
 FILE *log_file;

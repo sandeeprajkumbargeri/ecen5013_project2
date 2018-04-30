@@ -219,7 +219,7 @@ void setup_mq(void)
 	attr.mq_maxmsg = 10;
 	attr.mq_msgsize = sizeof(mq_payload_heartbeat_t);
 
-	mq_heartbeat = mq_open(MQ_HEARTBEAT_PATH, O_CREAT | O_RDWR | S_IRUSR | S_IWUSR | S_IROTH | S_IWOTH, &attr);
+	mq_heartbeat = mq_open(MQ_HEARTBEAT_PATH, O_CREAT | O_RDWR | S_IRUSR, S_IWUSR | S_IROTH | S_IWOTH, &attr);
 
 	if(mq_heartbeat < 0)
 		perror("Heartbeat Message Queue");

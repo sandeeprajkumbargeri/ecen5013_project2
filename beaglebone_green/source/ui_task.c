@@ -1,4 +1,20 @@
 #include "../include/ui_task.h"
+#include "../include/logger_task.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <ctype.h>
+#include <stdbool.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <mqueue.h>
 
 void *ui_task_thread(void *args)
 {
@@ -8,12 +24,18 @@ void *ui_task_thread(void *args)
   struct sockaddr_un sockaddr_ui, sockaddr_comm;
   socklen_t sockaddr_length;
   sk_payload_ui_request_t request;
+  char log_message[128];
+  pthread_t heartbeat_ui_notifier_task;
 
   command_list_init();
   sock_ui = socket(AF_UNIX, SOCK_DGRAM, 0);     //create a datagram socket
 
   if(sock_ui < 0)
-    errExit("## ERROR ## Creating Socket: ");
+  {
+    bzero(log_message, sizeof(log_message));
+    sprintf(log_message, "## UI ## Error Creating Socket. %s", strerror(errno));
+    LOG(mq_logger, log_message);
+  }
 
   bzero(sockaddr_path_ui, sizeof(sockaddr_path_ui));
   strcpy(sockaddr_path_ui, SK_UI_PATH);
@@ -22,7 +44,7 @@ void *ui_task_thread(void *args)
   bzero(sockaddr_path_comm, sizeof(sockaddr_path_comm));
   strcpy(sockaddr_path_comm, SK_SOCK_COMM_PATH);
 
-  sockaddr_length = sizeof(sockaddr_un);
+  sockaddr_length = sizeof(struct sockaddr_un);
   bzero(&sockaddr_ui, sockaddr_length);
   bzero(&sockaddr_comm, sockaddr_length);
 
@@ -33,13 +55,17 @@ void *ui_task_thread(void *args)
   strncpy(sockaddr_comm.sun_path, sockaddr_path_comm, sizeof(sockaddr_comm.sun_path) -1);
 
   if(bind(sock_ui, (struct sockaddr *) &sockaddr_ui, sizeof(struct sockaddr_un)) < 0)
-    errExit("## ERROR ## Bind: ");
+  {
+    bzero(log_message, sizeof(log_message));
+    sprintf(log_message, "## UI ## Error Creating Socket. %s", strerror(errno));
+    LOG(mq_logger, log_message);
+  }
 
   printf("\n\t\t\t## AVAILABLE COMMANDS ##\n");
   for(int i = 0; i < TOTAL_COMMANDS; i++)
     printf("%s\n",command_list[i]);
 
-  pthread_create(&heartbeat_ui_notifier_task, NULL, heartbeat_ui_notifier_thread, (void *) NULL);
+  pthread_create(&heartbeat_ui_notifier_task, NULL, ui_heartbeat_notifier_thread, (void *) NULL);
 
   while(!close_app)
   {
@@ -72,10 +98,10 @@ void *ui_task_thread(void *args)
 
     else
     {
-      if(command >= COMMAND_SET_TEMPERATURE_MAX && command <= COMMAND_SET_RANGE)
+      if(request.command >= COMMAND_SET_TEMPERATURE_MAX && request.command <= COMMAND_SET_RANGE)
         printf("Enter value: ");
 
-      scanf("&u", request.data);
+      scanf("%u", &request.data);
 
       if((request.command == COMMAND_SET_TEMPERATURE_MAX) && (request.data > MAX_SETTABLE_TEMP) ||
       (request.command == COMMAND_SET_TEMPERATURE_MIN) && (request.data < MIN_SETTABLE_TEMP) ||
@@ -89,12 +115,20 @@ void *ui_task_thread(void *args)
       }
 
       if(sendto(sock_ui, (const void *) &request, sizeof(request), 0, (const struct sockaddr *) &sockaddr_comm, sockaddr_length) < 0)
-        errExit("## ERROR ## Sending request to remote: ");
+        {
+          bzero(log_message, sizeof(log_message));
+          sprintf(log_message, "## UI ## Sending request to remote: %s", strerror(errno));
+          LOG(mq_logger, log_message);
+        }
 
       bzero(response, sizeof(response));
 
       if(recvfrom(sock_ui, (void *) response, sizeof(response), 0, (struct sockaddr *) &sockaddr_comm, &sockaddr_length) < 0)
-        errExit("## ERROR ## Receiving response from remote: ");
+      {
+        bzero(log_message, sizeof(log_message));
+        sprintf(log_message, "## UI ## Receiving response from remote: %s", strerror(errno));
+        LOG(mq_logger, log_message);
+      }
 
       printf("-> %s\n", response);
     }
@@ -103,7 +137,7 @@ void *ui_task_thread(void *args)
   pthread_exit(0);
 }
 
-void *heartbeat_ui_notifier_thread(void *args)
+void *ui_heartbeat_notifier_thread(void *args)
 {
   mq_payload_heartbeat_t heartbeat_ui;
   char log_message[128];
