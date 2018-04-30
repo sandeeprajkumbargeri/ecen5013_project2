@@ -1,3 +1,8 @@
+/*
+  Author: Sandeep Raj Kumbargeri & Prithvi Teja Veeravalli
+  Description: Communicates with FreeRTOS TIVA Board and gets sensor data from it.
+  Date: 29-April-2018
+*/
 #include "main.h"
 
 #include <linux/i2c-dev.h>
