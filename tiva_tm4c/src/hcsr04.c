@@ -1,4 +1,5 @@
 #include "../include/hcsr04.h"
+#include "../include/comm_task.h"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -125,10 +126,35 @@ void HCSR04_2_Init(void)
     GPIOIntEnable(GPIO_PORTH_BASE, GPIO_PIN_1);
 }
 
+void Task_HCSR04_Cmd_Handling(void *pvParameters)
+{
+    int returnVal;
+    receive_packet_buffer receive_buffer;
+    while(1)
+    {
+
+        xSemaphoreTake(sem_hcsr04_cmd, portMAX_DELAY);
+        while(uxQueueMessagesWaiting(hcsr04_queue))
+        {
+            static int count = 0;
+            bzero((void *)&receive_buffer, RECEIVE_PACKET_SIZE);
+            returnVal = xQueueReceive(hcsr04_queue, (void *)&receive_buffer, portMAX_DELAY);
+            if(returnVal == pdPASS)
+            {   /*Just for debugging have to replace with condition checking*/
+               /* sprintf(print_string, "\nBME280:");
+                UARTprintf(print_string);*/
+//                    COMM_SEND((uint8_t *)&receive_buffer, RECEIVE_PACKET_SIZE);
+            }
+        }
+    }
+}
 void Task_HCSR04(void *pvParameters)
 {
     float usecs_1 = 0, usecs_2 = 0, cms_1 =  0, cms_2 = 0;
     char print_string[64];
+
+    /* Create Motion Detection Task*/
+    xTaskCreate( Task_HCSR04_Cmd_Handling, "Motion Detection Command Handling Task", 1000, NULL, 1, NULL ); /* This COMM_TASK does not use the task handle. */
 
     TIMER0_Init();
     TIMER1_Init();
@@ -155,7 +181,45 @@ void Task_HCSR04(void *pvParameters)
         usecs_2 = ((float) pwm_width_2 / (float) sys_clock_get) * 1000000;
         cms_2 = (float) usecs_2 / 58;
 
+        send_packet_buffer message;
+
+        message.tiva_id = TIVA_ID;
+        message.route_id = LOG_ROUTE;
+
+        bzero((void *)message.message, sizeof(message.message));
+
+        if(cms_1 < DOOR_LENGTH)
+        {
+            number_of_people += 1;
+            sprintf(message.message, "A new person entered the house. Number of People: %d", number_of_people);
+            xQueueSend(comm_send_queue, (void *)&message, portMAX_DELAY);
+            if(!(comm_task_events & COMM_TASK_SEND_EVENT))
+            {
+                comm_task_events |= COMM_TASK_SEND_EVENT;
+                xSemaphoreGive(comm_task_sem);
+            }
+
+
+        }
+        if(cms_2 < DOOR_LENGTH)
+        {
+            if(number_of_people >= 0)
+            {
+                number_of_people -= 1;
+            }
+            sprintf(message.message, "A new person eexited the house. Number of People: %d", number_of_people);
+            xQueueSend(comm_send_queue, (void *)&message, portMAX_DELAY);
+            if(!(comm_task_events & COMM_TASK_SEND_EVENT))
+            {
+                comm_task_events |= COMM_TASK_SEND_EVENT;
+                xSemaphoreGive(comm_task_sem);
+            }
+
+        }
+
+
 /*        sprintf(print_string, "D1: %f. D2: %f.\n", cms_1, cms_2);
         UARTprintf(print_string);*/
     }
 }
+

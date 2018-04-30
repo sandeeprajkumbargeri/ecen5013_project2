@@ -6,6 +6,7 @@
  */
 
 #include "../include/comm_task.h"
+#include "../main.h"
 #include "../include/bme280.h"
 #include "string.h"
 
@@ -70,6 +71,11 @@ void vCommTask( void *pvParameters )
                                 xSemaphoreGive(sem_bme280_acq);
                             }
                         }
+                        if((receive_buffer.command_id >= HCSR04_COMMANDS_ID_MIN)&&(receive_buffer.command_id <= HCSR04_COMMANDS_ID_MAX))
+                        {
+                            xQueueSend(hcsr04_queue, (void *)&receive_buffer, portMAX_DELAY);
+                            xSemaphoreGive(sem_hcsr04_cmd);
+                        }
 
                     }
                 }
@@ -81,4 +87,3 @@ void vCommTask( void *pvParameters )
     }
 
 }
-

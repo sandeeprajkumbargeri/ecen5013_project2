@@ -40,7 +40,7 @@ typedef struct send_packet_buffer{
 #define COMM_TASK_SEND_EVENT    1<<0
 #define COMM_TASK_RECEIVE_EVENT    1<<1
 
-BaseType_t comm_task_events;
+volatile BaseType_t comm_task_events;
 
 receive_packet_buffer receive_packet;
 uint8_t packet_received;                                    //This variable is used as a flag to check if a packet has been received

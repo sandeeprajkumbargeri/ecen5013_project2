@@ -62,7 +62,7 @@ EventGroupHandle_t event_group;
 uint32_t sys_clock_get;
 
 QueueHandle_t comm_send_queue, comm_receive_queue, bme280_queue, hcsr04_queue;                                    //Queue used to send the Log string from Task 2 to Task 3.
-SemaphoreHandle_t comm_task_sem, sem_bme280_acq, sem_hcsr04_acq, sem_hcsr04_update;             //Semaphores for comm_task and various tasks.
+SemaphoreHandle_t comm_task_sem, sem_bme280_acq, sem_hcsr04_acq, sem_hcsr04_update, sem_hcsr04_cmd;             //Semaphores for comm_task and various tasks.
 
 
 

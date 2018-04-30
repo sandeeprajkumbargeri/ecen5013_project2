@@ -74,7 +74,7 @@
 #define BME280_TASK_SEND_EVENT    1<<0
 #define BME280_TASK_RECEIVE_EVENT    1<<1
 
-int BME280_task_events;
+volatile int BME280_task_events;
 
 typedef struct BME280_config
 {

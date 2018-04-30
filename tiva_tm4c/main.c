@@ -23,7 +23,11 @@ void timer_callback(TimerHandle_t timer)
         count = -1;
     }
     else
+    {
+//        HCSR04_task_events |= HCSR04_TASK_ACQ_EVENT;
+
         xSemaphoreGiveFromISR(sem_hcsr04_acq, &pxHigherPriorityTaskWoken);
+    }
 
     count++;
 }
@@ -50,6 +54,7 @@ void main(void)
     sem_bme280_acq = xSemaphoreCreateCounting(SEMAPHORE_MAX_COUNT, SEMAPHORE_INITIAL_COUNT);
     sem_hcsr04_acq = xSemaphoreCreateCounting(SEMAPHORE_MAX_COUNT, SEMAPHORE_INITIAL_COUNT);
     sem_hcsr04_update = xSemaphoreCreateCounting(SEMAPHORE_MAX_COUNT, SEMAPHORE_INITIAL_COUNT);
+    sem_hcsr04_cmd = xSemaphoreCreateCounting(SEMAPHORE_MAX_COUNT, SEMAPHORE_INITIAL_COUNT);
 
     /* Create COMM_TASK*/
     xTaskCreate( vCommTask, "COMM TASK", 1000, NULL, 1, NULL ); /* This COMM_TASK does not use the task handle. */
