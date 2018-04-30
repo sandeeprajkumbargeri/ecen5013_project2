@@ -158,19 +158,19 @@ void timer_expiry_handler(union sigval arg)
 	static uint8_t count = 0;
 	char log_message[128] = {0};
 
-	if(count % 3 == 0)
+	if(count == 0)
 	{
 		count++;
 		sem_post(&sem_logger);
 	}
 
-  else if(count % 3 == 1)
+  else if(count == 1)
   {
     count++;
     sem_post(&sem_sock_comm);
   }
 
-	else
+	else if(count == 2)
 	{
 		count++;
 		sem_post(&sem_ui);

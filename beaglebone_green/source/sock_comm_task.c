@@ -8,6 +8,7 @@
 //#define ETHERNET
 
 extern bool close_app;
+char receive_string[6];
 
 void *sock_comm_task_thread(void *args)
 {
@@ -120,6 +121,8 @@ void *sock_comm_task_thread(void *args)
 
     #ifdef UART
     bytes_read = UART4Recv(uart_handler, (uint8_t *)&message_ip, sizeof(message_ip));
+    //bytes_read = UART4Recv(uart_handler, (uint8_t *)receive_string, sizeof(receive_string));
+    printf("Bytes read.\n %s", receive_string);
 
     if(bytes_read < 0)
     {
@@ -130,14 +133,14 @@ void *sock_comm_task_thread(void *args)
     }
     #endif
 
-    if(message_ip.route_id == LOGGER_TASK_ID)
+    if(message_ip.route_id == (LOGGER_TASK_ID + 1))
     {
       bzero(log_message, sizeof(log_message));
       sprintf(log_message, "## CLIENT %u ## %s.", message_ip.device_id, message_ip.message);
       LOG(mq_logger, log_message);
     }
 
-    else if(message_ip.route_id == UI_TASK_ID)
+    else if(message_ip.route_id == (UI_TASK_ID + 1))
     {
       if(sendto(sock_comm, (const void *) message_ip.message, sizeof(message_ip.message), 0, (const struct sockaddr *) &sockaddr_ui, sockaddr_length_ui) < 0)
         {
@@ -188,12 +191,11 @@ void *heartbeat_sock_comm_notifier_thread(void *args)
 void *sock_comm_ui_handler_task_thread(void *args)
 {
   char log_message[128];
+  sk_payload_ui_request_t request_ui;
+  int bytes_written = 0;
+
   while(!close_app)
   {
-    sk_payload_ui_request_t request_ui;
-    int bytes_written = 0;
-    char test_string[12] = "Hello World";
-
     if(recvfrom(sock_comm, (void *) &request_ui, sizeof(request_ui), 0, (struct sockaddr *) &sockaddr_ui, &sockaddr_length_ui) < 0)
     {
       bzero(log_message, sizeof(log_message));
@@ -205,9 +207,9 @@ void *sock_comm_ui_handler_task_thread(void *args)
     sprintf(log_message, "## SOCK COMM ## Received request from user.");
     LOG(mq_logger, log_message);
 
-    #ifndef UART
-      //bytes_written = UART4Send(uart_handler, (uint8_t *)&request_ui, sizeof(request_ui));
-      bytes_written = UART4Send(uart_handler, (uint8_t *)test_string, sizeof(test_string));
+    #ifdef UART
+      bytes_written = UART4Send(uart_handler, (uint8_t *)&request_ui, sizeof(request_ui));
+      //bytes_written = UART4Send(uart_handler, (uint8_t *)test_string, sizeof(test_string));
 
       if(bytes_written < 0)
       {

@@ -17,7 +17,7 @@ int UART4_Init(void)
      return fd;
   }
   else
-     printf("\n  ttyO4 Opened Successfully\n");
+     //printf("\n  ttyO4 Opened Successfully\n");
 
   tcgetattr(fd, &SerialPortSettings);
 

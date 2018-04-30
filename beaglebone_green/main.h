@@ -27,13 +27,13 @@
 #define SK_SOCK_COMM_PATH    			"/tmp/sk_sock_comm"
 #define SK_UI_PATH    						"/tmp/sk_ui"
 
-#define LOGGER_TASK_ID	        1
-#define SOCK_COMM_TASK_ID       2
-#define UI_TASK_ID       				3
+#define LOGGER_TASK_ID	        0
+#define SOCK_COMM_TASK_ID       1
+#define UI_TASK_ID       				2
 
 #define LOGGER_TASK_NAME				"Logger Task"
 #define SOCK_COMM_TASK_NAME			"Socket Communication Task"
-#define UI_TASK_NAME						"User Communication Interface Task"
+#define UI_TASK_NAME						"User Interface Task"
 
 #define CLOCK_ID                CLOCK_MONOTONIC
 #define TIMER_EXPIRY_SEC					2

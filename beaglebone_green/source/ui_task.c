@@ -99,9 +99,10 @@ void *ui_task_thread(void *args)
     else
     {
       if(request.command >= COMMAND_SET_TEMPERATURE_MAX && request.command <= COMMAND_SET_RANGE)
-        printf("Enter value: ");
-
-      scanf("%u", &request.data);
+        {
+          printf("Enter value: ");
+          scanf("%u", &request.data);
+        }
 
       if((request.command == COMMAND_SET_TEMPERATURE_MAX) && (request.data > MAX_SETTABLE_TEMP) ||
       (request.command == COMMAND_SET_TEMPERATURE_MIN) && (request.data < MIN_SETTABLE_TEMP) ||
