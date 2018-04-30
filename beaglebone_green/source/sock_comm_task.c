@@ -120,9 +120,9 @@ void *sock_comm_task_thread(void *args)
     #endif
 
     #ifdef UART
-    bytes_read = UART4Recv(uart_handler, (uint8_t *)&message_ip, sizeof(message_ip));
+    cd ..bytes_read = UART4Recv(uart_handler, (uint8_t *)&message_ip, sizeof(message_ip));
     //bytes_read = UART4Recv(uart_handler, (uint8_t *)receive_string, sizeof(receive_string));
-    printf("Bytes read.\n %s", receive_string);
+    //printf("Bytes read.\n %s", receive_string);
 
     if(bytes_read < 0)
     {
