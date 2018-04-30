@@ -215,10 +215,10 @@ void Task_BME280(void *pvParameters)
             bzero(message.message, sizeof(message.message));
             bzero(print_string, sizeof(print_string));
 
-            sprintf(print_string, "T: %lf C. P: %lf hPa. H: %lf rH.\r\n", bme280_compensated_data.temperature, bme280_compensated_data.pressure / 100, bme280_compensated_data.humidity);
-            strcpy((char *)message.message, print_string);
+/*            sprintf(print_string, "T: %lf C. P: %lf hPa. H: %lf rH.\r\n", bme280_compensated_data.temperature, bme280_compensated_data.pressure / 100, bme280_compensated_data.humidity);
+            strcpy((char *)message.message, print_string);   */
 
-/*            xQueueSend(comm_send_queue, (void *)&message, portMAX_DELAY);*/
+            xQueueSend(comm_send_queue, (void *)&message, portMAX_DELAY);
             if(!(comm_task_events & COMM_TASK_SEND_EVENT))
             {
                 comm_task_events |= COMM_TASK_SEND_EVENT;
