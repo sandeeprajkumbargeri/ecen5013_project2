@@ -79,10 +79,13 @@ typedef struct sk_payload_ip_request
 
 typedef struct sk_payload_ui_request
 {
+	uint32_t data;
 	uint8_t device_id;
 	uint8_t command;
-	uint32_t data;
 } sk_payload_ui_request_t;
+
+#define RECEIVE_PACKET_SIZE     sizeof(sk_payload_ip_message_t)
+#define SEND_PACKET_SIZE        sizeof(sk_payload_ui_request_t)
 
 FILE *log_file;
 

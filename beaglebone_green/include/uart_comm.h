@@ -11,13 +11,9 @@
 #include <stdint.h>
 #include <termios.h>
 
-#define UART_PORT               0
-#define BAUD_RATE               B9600
-
-void UARTStdioIntHandler(void);
-void UART_Configure(uint32_t ui32SrcClock);
-void UARTSend(const uint8_t *pui8Buffer, uint32_t ui32Count);
+int UART4_Init(void);
+int UART4Send(int uart_fd, const uint8_t *write_buffer, uint32_t ui32Count);
+int UART4Recv(int uart_fd, const uint8_t *read_buffer, uint32_t ui32Count);
 
 
 #endif /* UART_UART_COMM_H_ */
-

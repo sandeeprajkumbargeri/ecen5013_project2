@@ -4,8 +4,8 @@ CC=gcc
 CFLAGS=-g -lm -lpthread -lrt
 RFLAGS=-rf
 
-execute: main.o sock_comm_task.o logger_task.o ui_task.o
-	$(CC) -o execute main.o sock_comm_task.o logger_task.o ui_task.o $(CFLAGS)
+execute: main.o sock_comm_task.o logger_task.o ui_task.o uart_comm.o
+	$(CC) -o execute main.o sock_comm_task.o logger_task.o ui_task.o uart_comm.o $(CFLAGS)
 
 sock_comm_task.o: $(SDIR)sock_comm_task.c $(IDIR)sock_comm_task.h main.h $(IDIR)logger_task.h
 	$(CC) -c $(SDIR)sock_comm_task.c -g
@@ -15,6 +15,9 @@ logger_task.o: $(SDIR)logger_task.c $(IDIR)logger_task.h main.h
 
 ui_task.o: $(SDIR)ui_task.c $(IDIR)sock_comm_task.h $(IDIR)ui_task.h
 	$(CC) -c $(SDIR)ui_task.c -g
+
+uart_comm.o: $(SDIR)uart_comm.c $(IDIR)uart_comm.h
+		$(CC) -c $(SDIR)uart_comm.c -g
 
 main.o: main.c main.h $(IDIR)logger_task.h
 	$(CC) -c main.c -g

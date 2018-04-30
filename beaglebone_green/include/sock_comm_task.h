@@ -13,12 +13,16 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <mqueue.h>
+#include "../include/uart_comm.h"
 
 #define SOCK_COMM_LISTEN_PORT                 8888
 
 struct sockaddr_un sockaddr_ui, sockaddr_comm;
 struct sockaddr_in sockaddr_comm_ip, sockaddr_comm_client;
 socklen_t sockaddr_length_ui, sockaddr_length_ip;
+
+int uart_handler;
+struct termios SerialPortSettings;
 
 void *sock_comm_task_thread(void *);
 void *heartbeat_sock_comm_notifier_thread(void *);
